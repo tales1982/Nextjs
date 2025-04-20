@@ -1,0 +1,19 @@
+# backend/docker-compose.yml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_nextjs
+    restart: always
+    environment:
+      POSTGRES_USER: tales
+      POSTGRES_PASSWORD: 170465
+      POSTGRES_DB: utilizando_sql
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
