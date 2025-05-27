@@ -1,0 +1,50 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 🔧 Bloco generator                                                                                  ///
+/// Esse bloco informa ao Prisma que queremos gerar um client JavaScript                                ///
+/// (ou TypeScript) para interagir com o banco de dados.                                                ///
+/// provider = "prisma-client-js": define que o Prisma vai gerar o código do cliente para você usar     ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+generator client {
+    provider = "prisma-client-js"
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 🗃️ Bloco datasource                                                                             ///
+/// Esse trecho define o banco de dados que o Prisma vai usar.                                      ///
+/// provider = "postgresql": indica que você está usando PostgreSQL.                                ///
+/// url = env("DATABASE_URL"): busca a URL de conexão do banco de dados no arquivo .env.            ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+/// 📦 Bloco model User                                                             ///        
+/// Esse é o modelo de dados, que vira uma tabela no PostgreSQL chamada User.       ///
+/// 🧪 Resultado no PostgreSQL                                                      ///
+/// Esse modelo vai gerar algo como:                                                ///
+/// CREATE TABLE "User" (                                                           ///
+///  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),                               ///
+///  "name" TEXT NOT NULL,                                                          ///
+///  "email" TEXT NOT NULL UNIQUE,                                                  ///
+///  "password" TEXT NOT NULL,                                                      ///
+///  "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP                                ///
+/// );                                                                              ///
+///////////////////////////////////////////////////////////////////////////////////////
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////
+/// Depois disso Rodar as migrações        ///
+/// npx prisma migrate dev --name init     ///
+//////////////////////////////////////////////
+/// Gerar o client do Prisma               ///
+/// npx prisma generate                    ///
+//////////////////////////////////////////////
